@@ -1,0 +1,561 @@
+/* =========================================================
+   Hero — the split panel from the comps: flat paper on the
+   left, the right half of the supplied clip on the right.
+   The review cards are composited into that artwork, so
+   they are not repeated in markup.
+
+   Sizing rule: the hero is exactly one viewport on desktop and
+   never taller than one viewport plus its own copy on smaller
+   screens. Both columns carry `min-height: 0` so the grid can
+   actually shrink them — without it the video's intrinsic
+   height pushes the row past 100svh.
+   ========================================================= */
+
+.hero {
+  display: grid;
+  /* The copy takes the larger share. The clip is a soft, upscaled render, so
+     the plate is deliberately the smaller half — every pixel it is stretched
+     past its native 952px width is visible as blur. One ratio across the whole
+     two-column range: below 1200px the column is what bounds the plate (the
+     max-width cap never engages there), so the split has to do that work. */
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  height: 100svh;
+  /* Don't crush the copy on short windows, don't stretch on tall ones. */
+  min-height: 34rem;
+  max-height: 78rem;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.hero > * {
+  min-height: 0;
+  min-width: 0;
+}
+
+.hero__copy {
+  display: grid;
+  align-items: center;
+  /* Symmetric side padding so the auto margins below centre the copy on the
+     column itself, not on a lopsided content box. */
+  padding: clamp(6rem, 4rem + 6vw, 8.5rem) var(--gutter) clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  overflow: hidden;
+}
+
+.hero__copy-inner {
+  /* Wide enough that "Water is the first" holds a single line, as drawn. */
+  max-width: 38rem;
+  /* Centred in the left column rather than hugging the media edge. */
+  margin-inline: auto;
+  animation: hero-in var(--dur-4) var(--ease-out) both;
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid rgba(14, 20, 24, 0.22);
+  border-radius: var(--r-pill);
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+}
+.hero__badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--slate-btn);
+}
+
+.hero__title .split {
+  display: block;
+}
+
+.hero__title {
+  margin-top: 1.35rem;
+  font-size: var(--fs-hero);
+  font-weight: 400;
+  line-height: 1.08;
+  /* Ranade is airy by default; a little more negative tracking at display
+     size keeps the two lines tight and buys back the width. */
+  letter-spacing: -0.028em;
+}
+
+.hero__lede {
+  margin-top: 1.25rem;
+  max-width: 30rem;
+  color: var(--ink-soft);
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.0625rem);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.1rem 1.6rem;
+  margin-top: clamp(1.75rem, 1rem + 2.2vw, 3rem);
+}
+
+.hero__loved {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.5rem 0.4rem 1.1rem;
+  border: 1px solid rgba(14, 20, 24, 0.16);
+  border-radius: var(--r-pill);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+.hero__faces {
+  display: inline-flex;
+}
+.hero__faces img {
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--paper);
+  margin-left: -0.6rem;
+}
+.hero__faces img:first-child {
+  margin-left: 0;
+}
+
+/* ---- media plate ---- */
+.hero__media {
+  position: relative;
+  display: grid;
+  /* An explicit track, not `auto`: a percentage max-height on the plate is
+     indefinite against an auto-sized row, so it silently stopped clamping and
+     the plate overflowed into the hero's `overflow: hidden`. */
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  padding: clamp(0.6rem, 0.3rem + 1vw, 1.1rem);
+  padding-left: 0;
+  /* Reserve the fixed bar's height plus a gap. The plate is centred in
+     whatever is left, so this is also the guaranteed minimum clearance: once
+     the window is short enough for `max-height` to clamp the plate, its top
+     lands exactly here. Without it a 768-864px-tall window ran the plate
+     under the nav. */
+  padding-top: calc(var(--nav-h) + 1.25rem);
+  /* Deeper than the other sides on purpose: it lifts the centred plate by half
+     its own value, so the plate sits above the column's true middle. The copy
+     opposite it is top-weighted, and a strictly centred plate hung low against
+     it. Any window short enough to clamp the plate is already sitting at the
+     padding-top floor, so this only bites where there is slack to give. */
+  padding-bottom: 5.5rem;
+}
+
+/*
+ * A 4:5 plate, taller than the clip's own 952:1080 (0.881), so `cover` has to
+ * give up ~87px of source width. That crop is pinned to the right by
+ * `object-position`, and the reason is measurable: on the 952px-wide frame the
+ * review cards run to x=920, leaving 30px of margin, while the left bottle
+ * does not start until x=207. Centring the crop would take ~44px off each side
+ * and clip the cards; taking all of it off the left still leaves the bottle
+ * ~119px of clearance. Do not switch this back to `center`.
+ *
+ * `max-width` is the sharpness budget, not a style choice. The file is 952px
+ * wide, so every CSS pixel past 476 is upscaling on a 2x display, and this
+ * clip has no detail to spare. Uncapped, the column handed it 1323px at 2560 —
+ * a 2.8x blow-up. 34rem holds it to 1.14x at every width above 1200px.
+ *
+ * `max-height` now engages on short windows too, since the media column gives
+ * up its top to the nav; `object-position` takes that crop off the top, where
+ * there is nothing but water.
+ */
+.hero__video {
+  width: 100%;
+  max-width: 34rem;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: right bottom;
+  border-radius: var(--r-lg);
+  background: var(--water-deep);
+}
+
+/* Narrow desktop / landscape tablet: stay two-column — stacking here would
+   push the hero well past a 768px-tall landscape viewport. The 1.2fr split
+   that used to be redeclared here is now the base rule, so only the padding
+   override is left. */
+@media (max-width: 1200px) and (min-width: 900px) {
+  .hero__copy {
+    /* Kept symmetric so the copy stays centred on the column here too. */
+    padding-inline: var(--gutter);
+  }
+}
+
+/* ---- stacked: copy over a bounded plate. Matches useMediaQuery in Home.jsx,
+   below which the video is replaced by its poster still. ---- */
+@media (max-width: 899px) {
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+  }
+  .hero__copy {
+    padding: clamp(6rem, 5rem + 5vw, 7.5rem) var(--gutter) 1.75rem;
+  }
+  .hero__copy-inner {
+    margin-left: 0;
+    max-width: 40rem;
+  }
+  .hero__media {
+    padding: 0 var(--gutter) var(--gutter);
+    /* Bounded so copy + plate stays close to a single viewport. */
+    height: min(46svh, 26rem);
+  }
+  /* Height-bounded here, so let the frame fill it and crop off the top. The
+     desktop width cap is dropped: the plate is meant to run the full gutter
+     width when stacked, and the bounded height keeps the upscale in check. */
+  .hero__video {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero__title {
+    margin-top: 1.1rem;
+  }
+  .hero__lede {
+    margin-top: 1rem;
+  }
+  .hero__actions {
+    margin-top: 1.5rem;
+  }
+  .hero__media {
+    height: min(38svh, 19rem);
+  }
+  .hero__loved {
+    font-size: 0.75rem;
+  }
+}
+
+/* Short phones: the copy alone nearly fills the screen, so trim the plate
+   further rather than letting the hero run to 1.4 viewports. */
+@media (max-width: 640px) and (max-height: 780px) {
+  .hero__media {
+    height: min(30svh, 15rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__copy-inner {
+    animation: none;
+  }
+}
+
+/* =========================================================
+   Ritual grid — the "Explore the Full Radiance Ritual" comp:
+   pale blue field, four cells split by hairline rules.
+   ========================================================= */
+
+/*
+ * Shares the story section's water plate, turned upside down (top-to-bottom
+ * mirror, no left-right flip — see prepare-media.mjs).
+ *
+ * `--plate: transparent` matters: the plate is a gradient, so a flat colour
+ * behind each knocked-out product would show as a soft rectangle. Leaving the
+ * card transparent lets `multiply` resolve against this background image
+ * instead — which is also why .ritual__grid carries no entrance animation.
+ * A transform or opacity on the cells would create a stacking context and
+ * isolate the blend. See components/product-card.css.
+ */
+.ritual {
+  background-color: var(--water);
+  background-image: url('/images/water-plate-flip.jpg');
+  background-size: cover;
+  background-position: center;
+  --plate: transparent;
+}
+
+.ritual__head {
+  text-align: center;
+  margin-bottom: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+}
+
+.ritual__title {
+  font-size: clamp(1.45rem, 0.9rem + 2.1vw, 2.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  font-weight: 400;
+}
+
+.ritual__sub {
+  margin-top: 0.7rem;
+  color: var(--ink-soft);
+}
+
+.ritual__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.ritual__cell {
+  padding-inline: clamp(0.75rem, 0.2rem + 1.6vw, 2rem);
+  border-left: 1px solid rgba(14, 20, 24, 0.16);
+}
+.ritual__cell:first-child {
+  border-left: 0;
+}
+
+@media (max-width: 900px) {
+  .ritual__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem 0;
+  }
+  .ritual__cell:nth-child(odd) {
+    border-left: 0;
+  }
+}
+@media (max-width: 480px) {
+  .ritual__grid {
+    grid-template-columns: 1fr;
+  }
+  .ritual__cell {
+    border-left: 0;
+  }
+}
+
+/* =========================================================
+   Story teaser
+   ========================================================= */
+
+.teaser {
+  padding-block: var(--section-y);
+  background: var(--paper);
+}
+
+.teaser__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: center;
+}
+
+.teaser__media {
+  border-radius: var(--r-lg);
+  aspect-ratio: 4 / 3;
+}
+
+.teaser__copy {
+  display: grid;
+  gap: 1.15rem;
+  justify-items: start;
+}
+
+.teaser__title {
+  font-size: var(--fs-display);
+  line-height: 1.1;
+}
+
+@media (max-width: 860px) {
+  .teaser__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Proof band (navy)
+   ========================================================= */
+
+.proof {
+  padding-block: var(--section-y);
+  background: var(--id-navy);
+  color: rgba(255, 255, 255, 0.82);
+}
+.proof__label {
+  color: rgba(255, 255, 255, 0.5);
+}
+.proof__title {
+  margin-top: 0.6rem;
+  font-size: var(--fs-display);
+  color: var(--white);
+  max-width: 18ch;
+}
+.proof__lede {
+  margin-top: 1.1rem;
+  max-width: 46ch;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.proof__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.75rem, 1rem + 2.5vw, 3.5rem);
+  margin-top: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+}
+
+.proof__item {
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--rule-light);
+}
+.proof__num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--id-teal);
+}
+.proof__item-title {
+  margin: 0.6rem 0 0.5rem;
+  font-size: 1.25rem;
+  color: var(--white);
+}
+
+.proof__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.75rem, 1rem + 2.5vw, 3.5rem);
+  margin-top: clamp(3rem, 2rem + 3vw, 5rem);
+  padding-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+  border-top: 1px solid var(--rule-light);
+}
+.stat__n {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 1.6rem + 2.6vw, 4rem);
+  line-height: 1;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+}
+.stat__n--word {
+  font-variant-numeric: normal;
+}
+.stat__c {
+  margin-top: 0.7rem;
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.62);
+  max-width: 24ch;
+}
+
+@media (max-width: 800px) {
+  .proof__list,
+  .proof__stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   In use
+   ========================================================= */
+
+.inuse {
+  padding-block: var(--section-y);
+  background: var(--water-cyan);
+}
+
+.inuse__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: center;
+}
+
+.inuse__copy {
+  display: grid;
+  gap: 1.15rem;
+  justify-items: start;
+}
+.inuse__title {
+  font-size: var(--fs-display);
+  line-height: 1.1;
+}
+
+.inuse__plates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.75rem, 0.4rem + 1vw, 1.25rem);
+}
+.inuse__plate {
+  border-radius: var(--r-md);
+}
+.inuse__plate--a {
+  aspect-ratio: 3 / 4;
+}
+.inuse__plate--b {
+  align-self: end;
+  aspect-ratio: 4 / 5;
+}
+
+@media (max-width: 860px) {
+  .inuse__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Set CTA
+   ========================================================= */
+
+.setcta {
+  background: var(--id-navy);
+  color: var(--white);
+}
+
+.setcta__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: center;
+  padding-block: var(--section-y);
+}
+
+.setcta__copy {
+  display: grid;
+  gap: 1.15rem;
+  justify-items: start;
+}
+.setcta .label {
+  color: rgba(255, 255, 255, 0.5);
+}
+.setcta__title {
+  font-size: var(--fs-display);
+  line-height: 1.08;
+}
+.setcta .lede {
+  color: rgba(255, 255, 255, 0.72);
+}
+.setcta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin-top: 0.5rem;
+}
+.setcta__link {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.62);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 2px;
+  transition: color var(--dur-1) var(--ease);
+}
+.setcta__link:hover {
+  color: var(--white);
+}
+
+.setcta__media {
+  border-radius: var(--r-lg);
+  aspect-ratio: 4 / 5;
+}
+
+@media (max-width: 860px) {
+  .setcta__inner {
+    grid-template-columns: 1fr;
+  }
+  .setcta__media {
+    order: -1;
+  }
+}

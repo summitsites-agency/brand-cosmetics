@@ -1,0 +1,120 @@
+/* =========================================================
+   Values
+   ========================================================= */
+
+.story-values {
+  background: var(--paper);
+}
+.story-values__title {
+  margin-top: 0.6rem;
+  font-size: var(--fs-display);
+  max-width: 20ch;
+}
+.story-values__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.75rem, 1rem + 2.5vw, 3.5rem);
+  margin-top: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+}
+.story-value {
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--rule);
+}
+.story-value__num {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--slate-btn-dk);
+}
+.story-value h3 {
+  margin: 0.6rem 0 0.5rem;
+  font-size: 1.25rem;
+}
+.story-value p {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+}
+@media (max-width: 800px) {
+  .story-values__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   The spring
+   ========================================================= */
+
+.story-source {
+  padding-block: var(--section-y);
+  background: var(--water-cyan);
+}
+.story-source__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: center;
+}
+.story-source__media {
+  border-radius: var(--r-lg);
+  aspect-ratio: 4 / 5;
+}
+.story-source__copy {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+.story-source__title {
+  font-size: var(--fs-display);
+  line-height: 1.08;
+}
+.story-source__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(14, 20, 24, 0.16);
+  width: 100%;
+}
+.story-source__n {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.story-source__stats .muted {
+  font-size: var(--fs-small);
+  margin-top: 0.35rem;
+}
+@media (max-width: 860px) {
+  .story-source__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Closing CTA
+   ========================================================= */
+
+.story-cta {
+  background: var(--id-navy);
+  color: var(--white);
+}
+.story-cta__inner {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: center;
+  text-align: center;
+  padding-block: var(--section-y);
+}
+.story-cta__inner > .reveal {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: center;
+}
+.story-cta__title {
+  font-size: var(--fs-display);
+  max-width: 16ch;
+}
+.story-cta .lede {
+  color: rgba(255, 255, 255, 0.72);
+}

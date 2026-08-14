@@ -1,0 +1,230 @@
+.bag-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scrim);
+  background: rgba(9, 24, 38, 0.34);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--dur-2) var(--ease),
+    visibility var(--dur-2);
+}
+.bag-scrim.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bag {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-drawer);
+  width: min(430px, 100vw);
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  box-shadow: -20px 0 60px rgba(9, 34, 56, 0.18);
+  transform: translate3d(100%, 0, 0);
+  visibility: hidden;
+  transition:
+    transform var(--dur-3) var(--ease-out),
+    visibility var(--dur-3);
+}
+.bag.is-open {
+  transform: none;
+  visibility: visible;
+}
+
+.bag__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 1.1rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.bag__title {
+  font-size: 1.75rem;
+}
+.bag__close {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  color: var(--ink);
+  transition: background-color var(--dur-1) var(--ease);
+}
+.bag__close:hover {
+  background: rgba(14, 20, 24, 0.07);
+}
+
+.bag__ship {
+  padding: 0.85rem 1.5rem;
+  background: var(--water-cyan);
+  font-size: var(--fs-small);
+}
+.bag__ship-track {
+  margin-top: 0.5rem;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(14, 20, 24, 0.12);
+  overflow: hidden;
+}
+.bag__ship-track i {
+  display: block;
+  height: 100%;
+  background: var(--slate-btn-dk);
+  transform-origin: left;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.bag__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem;
+  overscroll-behavior: contain;
+}
+
+.bag__empty {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+  padding-block: 2.5rem;
+}
+
+.bag__lines {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.bag-line {
+  position: relative;
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.bag-line:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.bag-line__media {
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  background: var(--white);
+}
+.bag-line__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bag-line__info {
+  display: grid;
+  align-content: start;
+  gap: 0.2rem;
+  padding-right: 1.5rem;
+}
+.bag-line__name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.32;
+}
+.bag-line__meta {
+  font-size: var(--fs-small);
+}
+.bag-line__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.55rem;
+}
+.bag-line__price {
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+.qty button {
+  width: 1.85rem;
+  height: 1.85rem;
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: background-color var(--dur-1) var(--ease);
+}
+.qty button:hover {
+  background: rgba(14, 20, 24, 0.07);
+}
+.qty span {
+  min-width: 1.5rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.bag-line__remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 50%;
+  color: var(--ink-mute);
+  transition:
+    background-color var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease);
+}
+.bag-line__remove:hover {
+  background: rgba(14, 20, 24, 0.07);
+  color: var(--ink);
+}
+
+.bag__foot {
+  padding: 1.25rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--rule-soft);
+  background: var(--white);
+}
+.bag__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 1.0625rem;
+}
+.bag__total strong {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.bag__note {
+  margin-top: 0.2rem;
+  margin-bottom: 1rem;
+  font-size: var(--fs-small);
+}
+.bag__demo {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+}
+.bag__foot .pill[disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.bag__foot .pill[disabled]:hover {
+  transform: none;
+  background: var(--slate-btn);
+  box-shadow: none;
+}

@@ -1,0 +1,124 @@
+.pcard {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+/* `--plate` lets a section declare the colour behind its product shots. It has
+   to be a real colour rather than `transparent`: the reveal wrapper's transform
+   creates a stacking context, so a blended image composites against this
+   element's own background, not the band further up the tree. */
+.pcard__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--plate, linear-gradient(180deg, #fbfbfc 0%, #eef2f5 100%));
+}
+
+.pcard__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    opacity var(--dur-3) var(--ease),
+    transform var(--dur-4) var(--ease-out);
+}
+
+.pcard__img--back {
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .pcard__media:hover .pcard__img--front {
+    opacity: 0;
+  }
+  .pcard__media:hover .pcard__img--back {
+    opacity: 1;
+  }
+  .pcard__media:hover .pcard__img {
+    transform: scale(1.035);
+  }
+}
+
+.pcard__flag {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-brd);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pcard__info {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 0.3rem;
+  padding-top: 1.15rem;
+  /* Grow so the CTA can bottom-align across cards with 1- and 2-line names. */
+  flex: 1;
+}
+
+.pcard__tag {
+  font-size: 0.625rem;
+  color: var(--ink-faint);
+}
+
+.pcard__name {
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.34;
+  max-width: 15ch;
+  /* Reserve two lines so every card's price and CTA share a baseline. */
+  min-height: calc(2 * 1.34em);
+}
+.pcard__name a {
+  transition: color var(--dur-1) var(--ease);
+}
+.pcard__name a:hover {
+  color: var(--slate-btn-dk);
+}
+
+.pcard__price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.pcard__price s {
+  color: var(--ink-faint);
+  font-size: 0.8125rem;
+}
+
+.pcard__cta {
+  margin-top: 0.9rem;
+  align-self: center;
+}
+
+/* Studio shots ship with a true-white backdrop, so multiplying them over the
+   plate erases it entirely and the product appears to float on the band.
+   Only ever applied to images prepared by the knockout LUT. */
+.pcard__media.is-knockout .pcard__img {
+  mix-blend-mode: multiply;
+}
+
+/* Where a section sets --plate to its own band colour the card has no visible
+   edge, so the rounded corners would only show as faint arcs: JPEG noise leaves
+   the image's corners a shade under pure white, and the radius clips that
+   darkening into a visible curve. Square it off and the shift is uniform. */
+[style*='--plate'] .pcard__media.is-knockout,
+.ritual .pcard__media.is-knockout,
+.pdp__more .pcard__media.is-knockout {
+  border-radius: 0;
+}

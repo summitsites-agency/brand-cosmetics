@@ -1,0 +1,131 @@
+.pill {
+  --pill-py: 0.72rem;
+  --pill-px: 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: var(--pill-py) var(--pill-px);
+  border-radius: var(--r-pill);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-2) var(--ease),
+    color var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease),
+    transform var(--dur-2) var(--ease),
+    box-shadow var(--dur-2) var(--ease);
+}
+
+.pill:hover {
+  transform: translateY(-1px);
+}
+.pill:active {
+  transform: translateY(0);
+}
+
+/* ---- sizes ---- */
+.pill--sm {
+  --pill-py: 0.55rem;
+  --pill-px: 1.15rem;
+  font-size: 0.8125rem;
+}
+.pill--lg {
+  --pill-py: 1.05rem;
+  --pill-px: 2.4rem;
+  font-size: 1.0625rem;
+}
+.pill--block {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ---- variants ---- */
+.pill--dark {
+  background: var(--indigo);
+  color: var(--white);
+}
+.pill--dark:hover {
+  background: #262461;
+  box-shadow: 0 10px 26px rgba(27, 26, 74, 0.28);
+}
+
+.pill--slate {
+  background: var(--slate-btn);
+  color: var(--white);
+}
+.pill--slate:hover {
+  background: var(--slate-btn-dk);
+  box-shadow: 0 10px 26px rgba(95, 140, 178, 0.34);
+}
+
+.pill--ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid rgba(14, 20, 24, 0.45);
+}
+.pill--ghost:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--white);
+}
+
+.pill--light {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 4px 18px rgba(9, 34, 56, 0.1);
+}
+.pill--light:hover {
+  box-shadow: 0 10px 26px rgba(9, 34, 56, 0.16);
+}
+
+.pill--glass {
+  background: var(--glass-bg);
+  color: var(--ink);
+  border: 1px solid var(--glass-brd);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  backdrop-filter: blur(14px) saturate(1.3);
+}
+.pill--glass:hover {
+  background: rgba(255, 255, 255, 0.82);
+}
+
+/* ---- leading arrow disc (hero "Shop Now") ---- */
+.pill--arrow {
+  padding-left: 0.4rem;
+}
+.pill__disc {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--indigo);
+  flex: none;
+  transition: transform var(--dur-2) var(--ease);
+}
+.pill--arrow:hover .pill__disc {
+  transform: translateX(3px);
+}
+.pill--slate .pill__disc {
+  color: var(--slate-btn-dk);
+}
+.pill--ghost .pill__disc,
+.pill--light .pill__disc {
+  background: var(--ink);
+  color: var(--white);
+}
+.pill--ghost:hover .pill__disc {
+  background: var(--white);
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill:hover,
+  .pill--arrow:hover .pill__disc {
+    transform: none;
+  }
+}

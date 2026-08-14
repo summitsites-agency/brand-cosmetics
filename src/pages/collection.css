@@ -1,0 +1,182 @@
+.coll__step {
+  padding-block: clamp(2.5rem, 1.75rem + 3vw, 4.5rem);
+}
+.coll__step:nth-child(odd) {
+  background: var(--paper);
+}
+.coll__step:nth-child(even) {
+  background: var(--water);
+}
+
+.coll__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: center;
+}
+.coll__step.is-flipped .coll__media {
+  order: 2;
+}
+
+.coll__media {
+  position: relative;
+  /* Cap the plate: at full column width a single step swallowed the viewport. */
+  width: min(100%, 21rem);
+  margin-inline: auto;
+  /* Matches the band so the knocked-out shot blends away cleanly. */
+  background: var(--paper);
+  border-radius: var(--r-lg);
+}
+.coll__step:nth-child(even) .coll__media {
+  background: var(--water);
+}
+.coll__media img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  transition: transform 1600ms var(--ease-out);
+}
+.coll__media.reveal:not(.is-shown) img {
+  transform: scale(1.06);
+}
+.coll__media.reveal:not(.is-shown) .coll__step-n {
+  opacity: 0;
+}
+.coll__media {
+  --img-extra: 0;
+  /* Every step's hero is a knocked-out studio shot, so it floats on the band. */
+  mix-blend-mode: multiply;
+}
+
+.coll__step-n {
+  transition: opacity 900ms var(--ease-out) 260ms;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 1.6rem + 3vw, 4.5rem);
+  line-height: 1;
+  color: rgba(14, 20, 24, 0.16);
+}
+
+.coll__copy {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+.coll__name {
+  font-size: var(--fs-display);
+  line-height: 1.06;
+}
+.coll__desc {
+  color: var(--ink-soft);
+  max-width: var(--maxw-text);
+  font-size: 0.9375rem;
+}
+
+.coll__keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.coll__keys li {
+  padding: 0.42rem 0.9rem;
+  border: 1px solid rgba(14, 20, 24, 0.16);
+  border-radius: var(--r-pill);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.coll__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  margin-top: 0.4rem;
+}
+.coll__quick {
+  font-size: 0.9375rem;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: border-color var(--dur-1) var(--ease);
+}
+.coll__quick:hover {
+  border-color: var(--ink);
+}
+
+@media (max-width: 880px) {
+  .coll__grid {
+    grid-template-columns: 1fr;
+  }
+  .coll__step.is-flipped .coll__media {
+    order: 0;
+  }
+}
+
+/* ---- boxed set ---- */
+.coll__set {
+  background: var(--id-navy);
+  color: var(--white);
+}
+.coll__set-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: center;
+  padding-block: var(--section-y);
+}
+.coll__set-copy {
+  display: grid;
+  gap: 1.1rem;
+  justify-items: start;
+}
+.coll__set .label {
+  color: rgba(255, 255, 255, 0.5);
+}
+.coll__set .lede {
+  color: rgba(255, 255, 255, 0.72);
+}
+.coll__set-title {
+  font-size: var(--fs-display);
+  line-height: 1.06;
+}
+.coll__set-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+.coll__set-price strong {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+.coll__set-price s {
+  color: rgba(255, 255, 255, 0.45);
+}
+.coll__set-save {
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--r-pill);
+  background: var(--id-teal);
+  color: var(--id-navy);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+}
+.coll__set-link {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.66);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 2px;
+}
+.coll__set-link:hover {
+  color: var(--white);
+}
+.coll__set-media {
+  border-radius: var(--r-lg);
+  aspect-ratio: 4 / 5;
+}
+@media (max-width: 880px) {
+  .coll__set-grid {
+    grid-template-columns: 1fr;
+  }
+}

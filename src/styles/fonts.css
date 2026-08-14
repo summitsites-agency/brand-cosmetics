@@ -1,0 +1,60 @@
+/*
+ * Self-hosted webfonts.
+ *
+ * Ranade (Indian Type Foundry, via Fontshare) is free for personal and
+ * commercial use under ITF's Free Font License — a copy ships alongside the
+ * files at public/fonts/Ranade-FFL.txt. The raw download is kept out of the
+ * build in fonts/; only the woff2 cuts the site actually sets are copied into
+ * public/fonts.
+ *
+ * `swap` matches how @fontsource behaves for the remaining families, so the
+ * hero renders in the fallback rather than staying invisible on a cold cache.
+ */
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('/fonts/Ranade-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('/fonts/Ranade-LightItalic.woff2') format('woff2');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('/fonts/Ranade-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('/fonts/Ranade-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('/fonts/Ranade-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('/fonts/Ranade-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

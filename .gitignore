@@ -1,0 +1,12 @@
+node_modules/
+dist/
+shots/
+*.local
+.DS_Store
+
+# Raw uploads. The web-ready derivatives in public/ are committed, so the repo
+# is clone-and-run; re-running `npm run prepare-media` needs these back.
+# Anchored to the root so public/fonts (the woff2 cuts the site actually loads)
+# still ships.
+/assets/
+/fonts/

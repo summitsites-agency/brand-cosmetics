@@ -1,0 +1,71 @@
+.acc {
+  border-top: 1px solid var(--rule-soft);
+}
+
+.acc__row {
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.acc__h {
+  margin: 0;
+  font-size: inherit;
+  font-weight: 400;
+}
+
+.acc__btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.15rem 0;
+  text-align: left;
+  font-size: 1.0625rem;
+  transition: color var(--dur-1) var(--ease);
+}
+.acc__btn:hover {
+  color: var(--slate-btn-dk);
+}
+
+.acc__chev {
+  flex: none;
+  color: var(--ink-mute);
+  transition: transform var(--dur-2) var(--ease);
+}
+.acc__row.is-open .acc__chev {
+  transform: rotate(180deg);
+}
+
+/* 0fr -> 1fr animates height without measuring anything in JS. */
+.acc__panel {
+  display: grid;
+  transition: grid-template-rows var(--dur-2) var(--ease);
+}
+.acc__clip {
+  overflow: hidden;
+}
+.acc__body {
+  padding-bottom: 1.35rem;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.66;
+}
+
+.acc__body ul {
+  display: grid;
+  gap: 0.35rem;
+}
+.acc__body li {
+  padding-left: 1rem;
+  position: relative;
+}
+.acc__body li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--slate-btn);
+}

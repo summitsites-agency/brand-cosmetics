@@ -1,0 +1,111 @@
+.shop {
+  background: var(--paper);
+}
+
+.shop__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.shop__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  padding: 0.55rem 1.15rem;
+  border: 1px solid rgba(14, 20, 24, 0.18);
+  border-radius: var(--r-pill);
+  font-size: 0.8125rem;
+  transition:
+    background-color var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease);
+}
+.chip:hover {
+  border-color: var(--ink);
+}
+.chip.is-on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--white);
+}
+
+.shop__sort {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.shop__sort select {
+  appearance: none;
+  padding: 0.55rem 2.2rem 0.55rem 1.1rem;
+  background: transparent;
+  border: 1px solid rgba(14, 20, 24, 0.18);
+  border-radius: var(--r-pill);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+.shop__sort svg {
+  position: absolute;
+  right: 0.9rem;
+  pointer-events: none;
+  color: var(--ink-mute);
+}
+
+.shop__count {
+  margin-top: 1rem;
+  font-size: var(--fs-small);
+}
+
+.shop__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.75rem, 1rem + 2.5vw, 3.25rem) clamp(1.25rem, 0.5rem + 2vw, 2.5rem);
+  margin-top: clamp(1.75rem, 1rem + 2vw, 3rem);
+}
+
+.shop__cell {
+  animation: card-rise 620ms var(--ease-out) both;
+  animation-delay: calc(var(--i) * 65ms);
+}
+
+@keyframes card-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+}
+
+.chip {
+  will-change: auto;
+}
+
+.shop__empty {
+  margin-top: 3rem;
+}
+
+@media (max-width: 900px) {
+  .shop__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 520px) {
+  .shop__grid {
+    grid-template-columns: 1fr;
+  }
+  .shop__bar {
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop__cell {
+    animation: none;
+  }
+}

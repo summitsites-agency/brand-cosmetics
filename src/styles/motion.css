@@ -1,0 +1,182 @@
+/*
+ * Shared motion layer.
+ *
+ * House rules, so scrolling stays at 60fps:
+ *   - animate `opacity` and `transform` only, never layout or filters;
+ *   - scroll listeners are rAF-batched and passive (see hooks/);
+ *   - `will-change` is dropped the moment an element has finished animating;
+ *   - every effect below collapses to nothing under prefers-reduced-motion.
+ */
+
+/* ---------- page transition ---------- */
+
+/*
+ * Opacity only — a transform here would become the containing block for the
+ * sticky rails on Skincare and the pinned narrative on Our Story.
+ */
+.page-enter {
+  animation: page-in 520ms var(--ease-out) both;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---------- word-stagger headings ---------- */
+
+.split {
+  display: inline;
+  /* Ranade's word space is a wide 0.30em, which reads loose at the display
+     sizes every SplitText heading uses — especially the uppercase ones. */
+  word-spacing: -0.06em;
+}
+
+.split__w {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 0.42em, 0);
+  will-change: opacity, transform;
+}
+
+.split.is-shown .split__w {
+  animation: word-in 760ms var(--ease-out) both;
+  animation-delay: calc(var(--stagger, 34ms) * var(--i) + var(--split-delay, 0ms));
+}
+
+@keyframes word-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- staggered children ---------- */
+
+.stagger > * {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+}
+
+.stagger.is-shown > * {
+  animation: rise-in 660ms var(--ease-out) both;
+  animation-delay: calc(var(--stagger, 70ms) * var(--i, 0));
+}
+
+.stagger.is-shown > *:nth-child(1) { --i: 0; }
+.stagger.is-shown > *:nth-child(2) { --i: 1; }
+.stagger.is-shown > *:nth-child(3) { --i: 2; }
+.stagger.is-shown > *:nth-child(4) { --i: 3; }
+.stagger.is-shown > *:nth-child(5) { --i: 4; }
+.stagger.is-shown > *:nth-child(6) { --i: 5; }
+.stagger.is-shown > *:nth-child(7) { --i: 6; }
+.stagger.is-shown > *:nth-child(8) { --i: 7; }
+
+@keyframes rise-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- media plates ---------- */
+
+/* The image sits slightly over-tall inside a clipping frame so the parallax
+   shift never exposes an edge.
+   The inner is absolutely positioned on purpose: a percentage height would
+   resolve against a frame whose own height comes from `aspect-ratio`, and the
+   circular reference makes the frame fall back to the image's intrinsic height.
+   Taking it out of flow lets the aspect-ratio govern the box cleanly. */
+.par {
+  position: relative;
+  overflow: hidden;
+}
+.par__inner {
+  position: absolute;
+  inset: -6% 0;
+  will-change: transform;
+}
+.par__inner > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Scale-and-settle for a plate arriving on screen. */
+.plate-in {
+  overflow: hidden;
+}
+.plate-in > img,
+.plate-in > .par__inner {
+  transform: scale(1.08);
+  transition: transform 1400ms var(--ease-out);
+}
+.plate-in.is-shown > img,
+.plate-in.is-shown > .par__inner {
+  transform: scale(1);
+}
+
+/* ---------- crossfade for tabbed/filtered content ---------- */
+
+.swap {
+  animation: swap-in 420ms var(--ease-out) both;
+}
+
+@keyframes swap-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+}
+
+/* ---------- underline sweep on section rules ---------- */
+
+.rule-sweep {
+  position: relative;
+}
+.rule-sweep::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.28;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1100ms var(--ease-out);
+}
+.rule-sweep.is-shown::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter,
+  .split.is-shown .split__w,
+  .stagger.is-shown > *,
+  .swap {
+    animation: none;
+  }
+  .split__w,
+  .stagger > * {
+    opacity: 1;
+    transform: none;
+  }
+  .par__inner {
+    inset: 0;
+    transform: none !important;
+  }
+  .plate-in > img,
+  .plate-in > .par__inner,
+  .plate-in.is-shown > img,
+  .plate-in.is-shown > .par__inner {
+    transform: none;
+    transition: none;
+  }
+  .rule-sweep::after {
+    transform: scaleX(1);
+    transition: none;
+  }
+}

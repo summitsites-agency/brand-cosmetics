@@ -1,0 +1,363 @@
+/*
+ * Product page — the hard split from the e-commerce comps: product field on the
+ * left, flat pale-cyan panel on the right holding title, price, Add to Bag and
+ * the three accordion rows.
+ */
+
+.pdp {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr);
+  min-height: 100svh;
+  background: var(--water-cyan);
+}
+
+/* ---- left: image field ---- */
+.pdp__media {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 1.25rem;
+  padding: clamp(7.5rem, 6rem + 6vw, 10rem) clamp(1.5rem, 0.5rem + 3vw, 4rem)
+    clamp(2.5rem, 1.5rem + 3vw, 4rem);
+  background:
+    radial-gradient(120% 90% at 30% 20%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(160deg, #e6f1f7 0%, #cfe1ed 55%, #bcd6e6 100%);
+}
+
+.pdp__stage {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  max-height: 68svh;
+  margin-inline: auto;
+  width: min(100%, 32rem);
+}
+
+.pdp__shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(0.99);
+  transition:
+    opacity var(--dur-3) var(--ease),
+    transform var(--dur-3) var(--ease);
+}
+.pdp__shot.is-knockout {
+  mix-blend-mode: multiply;
+}
+/* Shots that keep their own backdrop get a card so they don't clash with the
+   field behind them. */
+.pdp__shot:not(.is-knockout) {
+  object-fit: cover;
+  border-radius: var(--r-md);
+}
+/* A slow idle float, so the product reads as suspended rather than pasted on.
+   It lives on the image, never on an ancestor: a transform between the blended
+   shot and .pdp__media would isolate it and kill the knockout. */
+.pdp__shot.is-on {
+  opacity: 1;
+  transform: none;
+  animation: pdp-float 7s ease-in-out infinite;
+}
+
+@keyframes pdp-float {
+  0%,
+  100% {
+    transform: translate3d(0, -6px, 0);
+  }
+  50% {
+    transform: translate3d(0, 6px, 0);
+  }
+}
+
+.pdp__thumbs {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+}
+.pdp__thumb {
+  background: #fff;
+  width: 3.4rem;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  border: 1px solid transparent;
+  outline-offset: 2px;
+  opacity: 0.6;
+  transition:
+    opacity var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease);
+}
+.pdp__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pdp__thumb.is-knockout img {
+  mix-blend-mode: multiply;
+}
+.pdp__thumb:hover {
+  opacity: 0.9;
+}
+.pdp__thumb.is-on {
+  opacity: 1;
+  border-color: rgba(14, 20, 24, 0.4);
+}
+
+/* ---- right: panel ---- */
+.pdp__panel {
+  display: grid;
+  align-items: center;
+  padding: clamp(2.5rem, 1.5rem + 4vw, 5rem) var(--gutter)
+    clamp(3rem, 2rem + 3vw, 5rem) clamp(1.75rem, 0.5rem + 3.5vw, 4.5rem);
+}
+.pdp__panel-inner {
+  width: 100%;
+  max-width: 30rem;
+}
+.pdp__panel-inner > * {
+  animation: pdp-rise 700ms var(--ease-out) both;
+}
+.pdp__panel-inner > *:nth-child(1) { animation-delay: 60ms; }
+.pdp__panel-inner > *:nth-child(2) { animation-delay: 130ms; }
+.pdp__panel-inner > *:nth-child(3) { animation-delay: 200ms; }
+.pdp__panel-inner > *:nth-child(4) { animation-delay: 260ms; }
+.pdp__panel-inner > *:nth-child(5) { animation-delay: 320ms; }
+.pdp__panel-inner > *:nth-child(6) { animation-delay: 380ms; }
+.pdp__panel-inner > *:nth-child(7) { animation-delay: 430ms; }
+.pdp__panel-inner > *:nth-child(8) { animation-delay: 480ms; }
+.pdp__panel-inner > *:nth-child(n + 9) { animation-delay: 530ms; }
+
+@keyframes pdp-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+}
+
+.pdp__crumbs {
+  display: flex;
+  gap: 0.5rem;
+  font-size: var(--fs-small);
+  color: var(--ink-mute);
+  margin-bottom: 1.25rem;
+}
+.pdp__crumbs a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pdp__title {
+  font-size: clamp(2rem, 1.3rem + 2.2vw, 3.15rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+}
+.pdp__brand {
+  display: block;
+  font-weight: 500;
+}
+
+.pdp__price {
+  margin-top: 1rem;
+  font-size: clamp(1.25rem, 1.05rem + 0.6vw, 1.6rem);
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+}
+.pdp__price s {
+  font-size: 0.9375rem;
+  color: var(--ink-faint);
+}
+
+.pdp__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  font-size: var(--fs-small);
+  color: var(--ink-mute);
+}
+.pdp__stars {
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+}
+
+.pdp__short {
+  margin-top: 1.1rem;
+  color: var(--ink-soft);
+  max-width: 34ch;
+}
+
+.pdp__sizes {
+  margin-top: 1.5rem;
+}
+.pdp__size-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.pdp__add {
+  margin-top: 1.6rem;
+}
+
+.pdp__ship {
+  margin-top: 0.85rem;
+  margin-bottom: 1.75rem;
+  font-size: var(--fs-small);
+  text-align: center;
+}
+
+.pdp__quote {
+  margin: 0.9rem 0 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--slate-btn);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.pdp__quote cite {
+  display: block;
+  margin-top: 0.5rem;
+  font-style: normal;
+  font-size: var(--fs-small);
+  color: var(--ink-mute);
+}
+
+/* Consumer-study result. Always carries its own basis line — see `claim` in
+   src/data/products.js. */
+.pdp__claim {
+  margin-top: 1.1rem;
+  font-size: var(--fs-small);
+  color: var(--ink-mute);
+}
+.pdp__claim strong {
+  color: var(--ink-soft);
+}
+
+.pdp__facts {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1.5rem 0 0;
+  font-size: var(--fs-small);
+}
+.pdp__fact {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px dashed var(--rule-soft);
+}
+.pdp__fact dt {
+  color: var(--ink-mute);
+}
+.pdp__fact dd {
+  margin: 0;
+}
+
+@media (max-width: 980px) {
+  .pdp {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .pdp__media {
+    padding-top: clamp(7rem, 6rem + 6vw, 9rem);
+  }
+  .pdp__stage {
+    max-height: none;
+    width: min(100%, 26rem);
+  }
+  .pdp__panel {
+    padding-inline: var(--gutter);
+  }
+  .pdp__panel-inner {
+    max-width: 34rem;
+    margin-inline: auto;
+  }
+}
+
+/* ---- editorial band ---- */
+.pdp__story {
+  padding-block: var(--section-y);
+  background: var(--paper);
+}
+.pdp__story-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: center;
+}
+.pdp__story-media {
+  border-radius: var(--r-lg);
+  aspect-ratio: 16 / 10;
+}
+.pdp__story-copy {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+.pdp__story-title {
+  font-size: var(--fs-h2);
+}
+@media (max-width: 860px) {
+  .pdp__story-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- related ---- */
+.pdp__more {
+  background: var(--water);
+  --plate: var(--water);
+}
+.pdp__more-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: clamp(1.75rem, 1rem + 2vw, 3rem);
+  border-bottom: 1px solid rgba(14, 20, 24, 0.16);
+}
+.pdp__more-head h2 {
+  font-size: var(--fs-h2);
+}
+.pdp__more-link {
+  font-size: var(--fs-small);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+}
+.pdp__more-link:hover {
+  border-color: var(--ink);
+}
+.pdp__more-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 0.5rem + 2vw, 2.5rem);
+}
+@media (max-width: 760px) {
+  .pdp__more-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pdp__more-grid > *:last-child {
+    display: none;
+  }
+}
+@media (max-width: 460px) {
+  .pdp__more-grid {
+    grid-template-columns: 1fr;
+  }
+  .pdp__more-grid > *:last-child {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp__panel-inner > *,
+  .pdp__shot.is-on {
+    animation: none;
+  }
+}

@@ -1,0 +1,129 @@
+/*
+ * BRAND Cosmetics — design tokens.
+ *
+ * Every colour below was sampled straight out of the supplied mockups rather
+ * than eyeballed, so the build matches the comps pixel-for-pixel. The four
+ * identity-sheet swatches are kept verbatim under --id-*; the rest are the
+ * real surface colours the comps actually use (the pale blues in the artwork
+ * are noticeably deeper than the identity sheet's Soft Pale Blue).
+ */
+
+:root {
+  /* --- Identity sheet swatches (verbatim) --- */
+  --id-navy: #001f3f; /* Deep Navy */
+  --id-teal: #00c4cc; /* Bright Teal */
+  --id-pale: #e0f2f7; /* Soft Pale Blue */
+  --id-slate: #607d8b; /* Slate Blue */
+
+  /* --- Surfaces, sampled from the comps --- */
+  --paper: #f2f1f6; /* hero left panel */
+  --paper-warm: #f4f4ef; /* identity sheet stock */
+  --white: #ffffff;
+  --water: #cfe1ed; /* pale blue bands / collection grid */
+  --water-cyan: #d0ebf2; /* product page right panel */
+  --water-deep: #90afc1; /* mid-tone of the hero clip */
+
+  /* --- Ink --- */
+  --ink: #0e1418;
+  --ink-soft: #1f2427;
+  --ink-mute: #5b666e;
+  --ink-faint: #8d979d;
+
+  /* --- Accents --- */
+  --slate-btn: #78a3c5; /* "Add to Bag" fill */
+  --slate-btn-dk: #5f8cb2;
+  --indigo: #1b1a4a; /* dark "Shop Now" pill */
+
+  /* --- Lines --- */
+  --rule: rgba(14, 20, 24, 0.14);
+  --rule-soft: rgba(14, 20, 24, 0.08);
+  --rule-light: rgba(255, 255, 255, 0.22);
+
+  /* --- Glass (identity "Frosted Blue Glass") --- */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-brd: rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 10px 34px rgba(9, 34, 56, 0.16);
+
+  /* --- Type --- */
+  /*
+   * Ranade is the workhorse: headlines, body, UI. --font-display is the
+   * expressive accent (stat numerals, pull-quotes, page-head titles) and is
+   * still on Cormorant until the second face lands.
+   */
+  --font-display: 'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Ranade', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+
+  /* Fluid scale — clamp(min, preferred, max) */
+  /*
+   * Ranade sets ~7% wider than DM Sans did, and the hero copy column is a
+   * fixed fraction of the viewport, so this tracks the column width rather
+   * than flattening early — otherwise the hero's longest line ("Water is the
+   * first", 18 characters) wraps between 1200 and 1500px. The ceiling only
+   * engages once the column is wide enough to hold the line anyway.
+   */
+  --fs-hero: clamp(1.95rem, 3.6vw - 0.1rem, 3.4rem);
+  /* Ranade runs ~20% wider than DM Sans at the same size, so the display cap
+     drops a step to keep section headings the width they are in the comps. */
+  --fs-display: clamp(1.95rem, 1.1rem + 2.65vw, 3.5rem);
+  --fs-h2: clamp(1.75rem, 1.15rem + 2vw, 3rem);
+  --fs-h3: clamp(1.25rem, 1rem + 0.9vw, 1.85rem);
+  --fs-body: clamp(0.95rem, 0.9rem + 0.2vw, 1.0625rem);
+  --fs-small: 0.8125rem;
+  --fs-label: 0.6875rem;
+
+  --lh-tight: 1.06;
+  --lh-snug: 1.22;
+  --lh-body: 1.62;
+  --ls-label: 0.16em;
+
+  /* --- Space --- */
+  --sp-1: 0.375rem;
+  --sp-2: 0.75rem;
+  --sp-3: 1.125rem;
+  --sp-4: 1.75rem;
+  --sp-5: 2.5rem;
+  --sp-6: 3.5rem;
+  --sp-7: 5rem;
+  --sp-8: 7rem;
+  --section-y: clamp(4rem, 2rem + 7vw, 9rem);
+
+  /* --- Shell --- */
+  --gutter: clamp(1.15rem, 0.5rem + 3vw, 4rem);
+  --maxw: 1440px;
+  --maxw-text: 62ch;
+
+  /* The bar is `position: fixed`, so it takes no layout space and anything
+     sized against the viewport will happily run underneath it — which is what
+     put the hero plate 46px under the nav on a 1440x800 window. `--nav-pad-y`
+     is the bar's own vertical padding and `--nav-h` its full height (the pill
+     measures 3rem); nav.css consumes the first so the two cannot drift. */
+  --nav-pad-y: clamp(0.7rem, 0.4rem + 0.9vw, 1.15rem);
+  --nav-h: calc(3rem + 2 * var(--nav-pad-y));
+
+  /* --- Radii — the comps are heavily pill/rounded --- */
+  --r-pill: 999px;
+  --r-lg: 26px;
+  --r-md: 16px;
+  --r-sm: 10px;
+
+  /* --- Motion --- */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-1: 180ms;
+  --dur-2: 360ms;
+  --dur-3: 620ms;
+  --dur-4: 1100ms;
+
+  --z-nav: 60;
+  --z-drawer: 90;
+  --z-scrim: 80;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-1: 1ms;
+    --dur-2: 1ms;
+    --dur-3: 1ms;
+    --dur-4: 1ms;
+  }
+}

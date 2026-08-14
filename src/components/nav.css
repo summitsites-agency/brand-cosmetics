@@ -1,0 +1,258 @@
+/*
+ * Floating pill navigation, per the comps: a white logo pill hard left, a white
+ * link pill centred, and the frosted bag pill right. It sits over the hero
+ * rather than above it. Contact lives in the mobile sheet and the footer.
+ */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-nav);
+  /* Tokenised so --nav-h stays true; the hero plate clears itself against it. */
+  padding: var(--nav-pad-y) var(--gutter);
+  pointer-events: none;
+}
+
+.nav__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  max-width: var(--maxw);
+  margin-inline: auto;
+}
+
+.nav__row > * {
+  pointer-events: auto;
+}
+
+/* ---- logo pill ---- */
+.nav__brand {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.68rem 1.35rem 0.68rem 1.1rem;
+  background: var(--white);
+  border-radius: var(--r-pill);
+  box-shadow: 0 4px 20px rgba(9, 34, 56, 0.09);
+  transition: box-shadow var(--dur-2) var(--ease);
+}
+.nav__brand:hover {
+  box-shadow: 0 8px 28px rgba(9, 34, 56, 0.16);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--ink);
+}
+.logo__mark {
+  flex: none;
+}
+.logo__word {
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.logo__word b {
+  font-weight: 600;
+}
+.logo__word span {
+  font-weight: 400;
+}
+
+/* ---- centre link pill ---- */
+/* Centred on the page, not in the space left over between the logo and the bag
+   — otherwise removing a right-hand item drags the pill off centre. */
+.nav__links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: clamp(0.6rem, 0.1rem + 1.4vw, 1.5rem);
+  padding: 0.62rem 1.5rem;
+  background: var(--white);
+  border-radius: var(--r-pill);
+  box-shadow: 0 4px 20px rgba(9, 34, 56, 0.09);
+}
+
+.nav__link {
+  position: relative;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  padding-block: 0.15rem;
+  transition: color var(--dur-1) var(--ease);
+}
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-2) var(--ease);
+}
+.nav__link:hover::after,
+.nav__link.is-active::after {
+  transform: scaleX(1);
+}
+.nav__link.is-active {
+  font-weight: 500;
+}
+
+/* ---- right cluster ---- */
+.nav__end {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.nav__bag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.68rem 1.3rem;
+  border-radius: var(--r-pill);
+  font-size: 0.9375rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-brd);
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+  backdrop-filter: blur(16px) saturate(1.35);
+  box-shadow: 0 4px 18px rgba(9, 34, 56, 0.08);
+  transition: background-color var(--dur-2) var(--ease);
+}
+.nav__bag:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.nav__count {
+  display: grid;
+  place-items: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding-inline: 0.3rem;
+  border-radius: var(--r-pill);
+  background: rgba(14, 20, 24, 0.09);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  transition:
+    background-color var(--dur-2) var(--ease),
+    color var(--dur-2) var(--ease);
+}
+.nav__count.is-full {
+  background: var(--indigo);
+  color: var(--white);
+}
+
+/* ---- burger (mobile only) ---- */
+.nav__burger {
+  display: none;
+  place-items: center;
+  width: 2.85rem;
+  height: 2.85rem;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-brd);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+.nav__burger-ico {
+  display: grid;
+  gap: 5px;
+  width: 17px;
+}
+.nav__burger-ico i {
+  display: block;
+  height: 1.5px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform var(--dur-2) var(--ease);
+}
+.nav__burger-ico.is-open i:first-child {
+  transform: translateY(3.25px) rotate(45deg);
+}
+.nav__burger-ico.is-open i:last-child {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+
+/* ---- mobile sheet ---- */
+.nav__sheet {
+  display: none;
+}
+
+@media (max-width: 1040px) {
+  .nav__links {
+    display: none;
+  }
+  .nav__end {
+    margin-left: auto;
+  }
+  .nav__burger {
+    display: grid;
+  }
+
+  .nav__sheet {
+    display: grid;
+    gap: 0.15rem;
+    margin: 0.6rem auto 0;
+    max-width: var(--maxw);
+    padding: 1rem 1.25rem 1.25rem;
+    background: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    backdrop-filter: blur(20px) saturate(1.3);
+    border-radius: var(--r-lg);
+    box-shadow: 0 18px 44px rgba(9, 34, 56, 0.16);
+    pointer-events: auto;
+  }
+  .nav__sheet[hidden] {
+    display: none;
+  }
+  .nav__sheet-link {
+    padding: 0.85rem 0.25rem;
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    border-bottom: 1px solid var(--rule-soft);
+    opacity: 0;
+    transform: translateY(8px);
+    animation: sheet-in var(--dur-2) var(--ease-out) forwards;
+    animation-delay: calc(var(--i) * 45ms);
+  }
+  .nav__sheet-link:last-child {
+    border-bottom: 0;
+  }
+  .nav__sheet-link.is-active {
+    color: var(--slate-btn-dk);
+  }
+}
+
+@keyframes sheet-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .nav__brand {
+    padding: 0.6rem 1rem;
+  }
+  .logo__word span {
+    display: none;
+  }
+  .nav__bag {
+    padding: 0.6rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__sheet-link {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

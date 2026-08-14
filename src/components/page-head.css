@@ -1,0 +1,75 @@
+.phead {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(8.5rem, 6rem + 9vw, 13rem) clamp(3.5rem, 2rem + 4vw, 6rem);
+  background: var(--water);
+  overflow: hidden;
+}
+
+/* Over-tall so the parallax drift never exposes an edge. */
+.phead__plate-frame {
+  position: absolute;
+  inset: -7% 0;
+  z-index: -1;
+  will-change: transform;
+}
+
+.phead__plate {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 62%;
+}
+
+/* Keeps the eyebrow legible over the busier corners of the plate. */
+.phead--plate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(207, 225, 237, 0.55) 0%,
+    rgba(207, 225, 237, 0.1) 45%,
+    rgba(207, 225, 237, 0.35) 100%
+  );
+}
+
+.phead__inner {
+  max-width: var(--maxw);
+}
+
+.phead__eyebrow {
+  color: var(--ink-soft);
+  animation: phead-rise 700ms var(--ease-out) both;
+}
+
+.phead__title {
+  margin-top: 0.85rem;
+  font-size: var(--fs-display);
+  line-height: 1.06;
+  max-width: 18ch;
+}
+
+.phead__lede {
+  margin-top: 1.15rem;
+  color: var(--ink-soft);
+  animation: phead-rise 800ms var(--ease-out) 260ms both;
+}
+
+@keyframes phead-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phead__eyebrow,
+  .phead__lede {
+    animation: none;
+  }
+  .phead__plate-frame {
+    inset: 0;
+  }
+}

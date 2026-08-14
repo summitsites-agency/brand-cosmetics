@@ -1,0 +1,112 @@
+/* =========================================================
+   Pinned narrative — one water plate, four statements passing
+   through it. Only opacity/transform change, so the whole
+   sequence stays on the compositor.
+   ========================================================= */
+
+.story-stage {
+  /* One viewport of travel per frame, plus a screen to land on. */
+  height: 500svh;
+  position: relative;
+  background: var(--water);
+}
+
+.story-pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.story-plate {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.story-line {
+  grid-area: 1 / 1;
+  display: grid;
+  gap: 0.1em;
+  padding-inline: var(--gutter);
+  max-width: 60rem;
+  text-align: center;
+  font-size: clamp(1.6rem, 0.85rem + 3.1vw, 3.4rem);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  will-change: opacity, transform;
+}
+
+.story-line--serif {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 0.9rem + 3.9vw, 4.2rem);
+  letter-spacing: -0.005em;
+}
+
+.story-progress {
+  position: absolute;
+  bottom: clamp(1.75rem, 1rem + 2vw, 3rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.45rem;
+}
+.story-progress i {
+  width: 26px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(14, 20, 24, 0.2);
+  transition: background-color var(--dur-2) var(--ease);
+}
+.story-progress i.is-on {
+  background: rgba(14, 20, 24, 0.68);
+}
+
+/* Kept out of sight rather than out of the DOM: the stage only ever shows a
+   line or two at a time, so this is what a screen reader actually reads. */
+.story-flat {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-stage {
+    display: none;
+  }
+  /* Promote the same markup to the visible article, full-bleed band. */
+  .story-flat {
+    position: static;
+    display: grid;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    gap: 2.5rem;
+    padding: var(--section-y) max(var(--gutter), calc((100% - 62rem) / 2));
+    background: var(--water);
+    text-align: center;
+    font-size: clamp(1.4rem, 0.9rem + 2vw, 2.4rem);
+    line-height: 1.24;
+  }
+  .story-flat .story-line--serif {
+    font-family: var(--font-display);
+  }
+}
