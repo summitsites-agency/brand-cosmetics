@@ -105,7 +105,16 @@ export default function Footer() {
         <div className="foot__bar">
           <p>© {new Date().getFullYear()} BRAND Cosmetics. All rights reserved.</p>
           <p className="foot__demo">
-            A Summit Sites demo — fictional brand, no orders are processed.
+            A{' '}
+            <a
+              href="https://mossimo-studios.vercel.app"
+              target="_blank"
+              rel="noopener"
+              style={{ color: 'inherit', textDecoration: 'underline', textUnderlineOffset: '2px' }}
+            >
+              mossimo Studios
+            </a>{' '}
+            demo — fictional brand, no orders are processed.
           </p>
         </div>
       </div>

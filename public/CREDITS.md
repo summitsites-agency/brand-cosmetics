@@ -39,5 +39,5 @@ repeat them in markup.
 ## Source material
 
 Client-supplied product renders, design comps and motion frames for the
-*BRAND Cosmetics* concept. This is a **Summit Sites demo** — a fictional brand.
+*BRAND Cosmetics* concept. This is a **mossimo Studios demo** — a fictional brand.
 No orders are processed and the checkout button is deliberately inert.

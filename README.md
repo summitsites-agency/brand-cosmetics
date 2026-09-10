@@ -1,6 +1,6 @@
 # BRAND Cosmetics — luxury skincare storefront
 
-A Summit Sites demo, built from the supplied brand identity sheet, page comps
+A mossimo Studios demo, built from the supplied brand identity sheet, page comps
 and motion frames. Vite 6 + React 19 + React Router 7, design-token CSS, no UI
 framework.
 
