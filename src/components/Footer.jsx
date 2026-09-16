@@ -105,16 +105,19 @@ export default function Footer() {
         <div className="foot__bar">
           <p>© {new Date().getFullYear()} BRAND Cosmetics. All rights reserved.</p>
           <p className="foot__demo">
-            A{' '}
             <a
+              className="foot__maker"
               href="https://mossimo-studios.vercel.app"
               target="_blank"
               rel="noopener"
-              style={{ color: 'inherit', textDecoration: 'underline', textUnderlineOffset: '2px' }}
+              aria-label="mossimo Studios"
             >
-              mossimo Studios
-            </a>{' '}
-            demo — fictional brand, no orders are processed.
+              {/* Reversed one-colour mark: the navy footer would swallow the
+                  wordmark's black ink entirely. */}
+              <img src="/mossimo-studios-reverse.png" alt="" width="900" height="304" />
+            </a>
+            This website is the property of, and was made by, mossimo Studios · © 2026. A
+            fictional brand, no orders are processed.
           </p>
         </div>
       </div>
